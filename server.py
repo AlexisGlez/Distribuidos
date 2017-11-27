@@ -68,10 +68,10 @@ def handleServerMessage(message, action):
 		if ServerData.isMaster:
 			ServerData.lastId += 1
 			ServerData.servers[ServerData.lastId] = address[0] + ':' + str(ServerData.STANDARD_PORT)
-			sock.sendto(createJsonStr(205, ServerData.myId, ServerData.lastId, message['id'], ''), last_address_with_std_port)
+			sock.sendto(createJsonStr(205, int(ServerData.myId), ServerData.lastId, message['id'], ''), last_address_with_std_port)
 	# OK Server
 	if action == 205:
-		ServerData.myId = message['destiny']
+		ServerData.myId = int(message['destiny'])
 		ServerData.masterId = message['origin']
 		print >>sys.stderr, 'My Id: ', ServerData.myId
 		try:
@@ -86,7 +86,7 @@ def handleServerMessage(message, action):
 				"clients": ServerData.clients,
 				"servers": ServerData.servers
 			}
-			sock.sendto(createJsonStr(201, ServerData.myId, message['origin'], message['id'], json.dumps(payload)), last_address_with_std_port)
+			sock.sendto(createJsonStr(201, int(ServerData.myId), message['origin'], message['id'], json.dumps(payload)), last_address_with_std_port)
 	# Private Server Message
 	if action == 201:
 		if not ServerData.isMaster:
@@ -96,7 +96,7 @@ def handleServerMessage(message, action):
 			ServerData.clients = payload['clients']
 			ServerData.lastId = int(max(ServerData.servers, key=int))
 	# Election Victory
-	if action == 203 and message['origin'] != ServerData.myId:
+	if action == 203 and int(message['origin']) != int(ServerData.myId):
 		if not ServerData.isMaster:
 			ServerData.masterId = message['origin']
 			try:
@@ -106,8 +106,8 @@ def handleServerMessage(message, action):
 				print(e)
 	# Server Election
 	if action == 206 and not ServerData.isMaster:
-		if ServerData.myId < message['origin']:
-			sock.sendto(createJsonStr(207, ServerData.myId, message['origin'], message['id'], ''), last_address_with_std_port)
+		if int(ServerData.myId) < int(message['origin']):
+			sock.sendto(createJsonStr(207, int(ServerData.myId), message['origin'], message['id'], ''), last_address_with_std_port)
 	# Desist From Election
 	if action == 207 and not ServerData.isMaster:
 		ServerData.shouldIBeMaster = False
