@@ -38,7 +38,7 @@ def heartBeat(sock, serverAddress):
 
 def initElectionProcess(sock):
   myId = ServerData.myId
-  idsToSend = {k: v for k, v in ServerData.servers.items() if k < myId}
+  idsToSend = {k: v for k, v in ServerData.servers.items() if int(k) < myId}
   if not idsToSend:
     setMeAsMaster(sock)
   else:
