@@ -62,7 +62,7 @@ def setMeAsMaster(sock):
     sock.sendto(createJsonStr(203, ServerData.myId, key, 0, ''),(parts[0], int(parts[1])))
 
 def shouldIBeMaster(sock):
-  time.sleep(3)
+  time.sleep(5)
   if ServerData.shouldIBeMaster:
     setMeAsMaster(sock)
   ServerData.shouldIBeMaster = True
