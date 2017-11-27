@@ -55,7 +55,7 @@ def setMeAsMaster(sock):
   print >>sys.stderr, 'Im now master!'
   ServerData.isMaster = True
   ServerData.masterId = ServerData.myId
-  ServerData.servers.pop(message[ServerData.myId])
+  ServerData.servers.pop(ServerData.myId)
   sock.sendto(createJsonStr(203, ServerData.myId, 'broadcast', 0, ''), ('255.255.255.255', ServerData.STANDARD_PORT))
   for key, value in ServerData.clients.items():
     parts = value.split(':')
