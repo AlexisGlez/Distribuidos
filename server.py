@@ -94,7 +94,7 @@ def handleServerMessage(message, action):
 			payload = parseJsonStrToObj(message['payload'])
 			ServerData.servers = payload['servers']
 			ServerData.clients = payload['clients']
-			ServerData.lastId = max(ServerData.servers, key=int)
+			ServerData.lastId = int(max(ServerData.servers, key=int))
 	# Election Victory
 	if action == 203 and message['origin'] != ServerData.myId:
 		if not ServerData.isMaster:

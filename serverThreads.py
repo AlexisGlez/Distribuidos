@@ -42,6 +42,7 @@ def initElectionProcess(sock):
   if not idsToSend:
     setMeAsMaster(sock)
   else:
+    print >>sys.stderr, 'Start vote process!'
     for key, value in idsToSend.items():
       parts = value.split(':')
       sock.sendto(createJsonStr(206, ServerData.myId, key, 0, ''), (parts[0], int(parts[1])))
